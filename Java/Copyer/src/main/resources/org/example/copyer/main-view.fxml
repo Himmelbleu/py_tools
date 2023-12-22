@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<VBox id="root" fx:id="root" alignment="CENTER" prefHeight="318.0" prefWidth="395.0"
+      style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.copyer.MainController">
+    <Label fx:id="dragFileArea" alignment="CENTER" contentDisplay="CENTER" onDragOver="#initialize"
+           prefHeight="317.0" prefWidth="395.0" text="将文件拖动到此处" textFill="WHITE">
+        <font>
+            <Font size="24.0"/>
+        </font>
+    </Label>
+    <TextArea fx:id="textArea" editable="false" prefHeight="200.0" prefWidth="200.0"/>
+</VBox>
