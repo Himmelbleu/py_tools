@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
+import os
+
 import pandas as pd
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-from consts import Consts
-from service import Services
+from service import CompartorService
+from ui import Formatter
+from utils import Dialogs, Constant, Files
 
 
-# Form implementation generated from reading ui file 'd:\Development\MyTools\Python\CompareData\ui\UI.ui'
+# Form implementation generated from reading ui file 'd:\Development\smalltools\Python\CompareData\ui\Comparator.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.10
 #
@@ -17,7 +20,7 @@ from service import Services
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(605, 689)
+        MainWindow.resize(605, 690)
         self.verticalLayout_1 = QtWidgets.QWidget(MainWindow)
         self.verticalLayout_1.setObjectName("verticalLayout_1")
         self.v_2 = QtWidgets.QVBoxLayout(self.verticalLayout_1)
@@ -93,18 +96,6 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.addWidget(self.tableWidget)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.add_field_btn = QtWidgets.QPushButton(self.verticalLayout_1)
-        font = QtGui.QFont()
-        font.setPointSize(11)
-        self.add_field_btn.setFont(font)
-        self.add_field_btn.setObjectName("add_field_btn")
-        self.horizontalLayout.addWidget(self.add_field_btn)
-        self.del_select_btn = QtWidgets.QPushButton(self.verticalLayout_1)
-        font = QtGui.QFont()
-        font.setPointSize(11)
-        self.del_select_btn.setFont(font)
-        self.del_select_btn.setObjectName("del_select_btn")
-        self.horizontalLayout.addWidget(self.del_select_btn)
         self.clear_table_btn = QtWidgets.QPushButton(self.verticalLayout_1)
         font = QtGui.QFont()
         font.setPointSize(11)
@@ -193,48 +184,67 @@ class Ui_MainWindow(object):
         self.verticalLayout_5.addWidget(self.execute_btn)
         self.v_2.addLayout(self.verticalLayout_5)
         MainWindow.setCentralWidget(self.verticalLayout_1)
+        self.menuBar = QtWidgets.QMenuBar(MainWindow)
+        self.menuBar.setGeometry(QtCore.QRect(0, 0, 605, 22))
+        self.menuBar.setObjectName("menuBar")
+        self.menu_2 = QtWidgets.QMenu(self.menuBar)
+        self.menu_2.setObjectName("menu_2")
+        self.menu_1 = QtWidgets.QMenu(self.menuBar)
+        self.menu_1.setObjectName("menu_1")
+        MainWindow.setMenuBar(self.menuBar)
+        self.statusBar = QtWidgets.QStatusBar(MainWindow)
+        self.statusBar.setObjectName("statusBar")
+        MainWindow.setStatusBar(self.statusBar)
+        self.action_timestamp = QtWidgets.QAction(MainWindow)
+        self.action_timestamp.setCheckable(True)
+        self.action_timestamp.setChecked(True)
+        self.action_timestamp.setObjectName("action_timestamp")
+        self.action_file_formatter = QtWidgets.QAction(MainWindow)
+        self.action_file_formatter.setObjectName("action_file_formatter")
+        self.menu_2.addAction(self.action_file_formatter)
+        self.menu_1.addAction(self.action_timestamp)
+        self.menuBar.addAction(self.menu_1.menuAction())
+        self.menuBar.addAction(self.menu_2.menuAction())
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        self.open_plat_file_btn.clicked.connect(self.plat_file_clicked)
+        self.open_his_file_btn.clicked.connect(self.his_file_clicked)
+        self.open_template_file_btn.clicked.connect(self.template_file_clicked)
+        self.clear_table_btn.clicked.connect(self.clear_table_clicked)
+        self.execute_btn.clicked.connect(self.execute_clicked)
+        self.action_file_formatter.triggered.connect(self.action_file_formatter_trigger)
 
-        self.open_plat_file_btn.clicked.connect(self.open_plat_file)
-        self.open_his_file_btn.clicked.connect(self.open_his_file)
-        self.open_template_file_btn.clicked.connect(self.open_template_file)
-        self.add_field_btn.clicked.connect(lambda: Services.add_table_value(self.tableWidget))
-        self.clear_table_btn.clicked.connect(self.clear_all_table_rows)
-        self.del_select_btn.clicked.connect(self.clear_select_table_rows)
-        self.execute_btn.clicked.connect(self.execute_mission)
-
-    def open_plat_file(self):
-        self.plat_file = Services.openfile()
-        self.open_plat_thread = Services.GetFileDataThread()
+    def plat_file_clicked(self):
+        self.plat_file = Files.openfile()
+        self.open_plat_thread = CompartorService.GetFileDataThread()
         self.open_plat_thread.set_values(self.plat_file)
-        self.open_plat_thread.success_signal.connect(self.open_plat_file_signal)
-        self.open_plat_thread.error_signal.connect(lambda e: Services.error_signal(e))
+        self.open_plat_thread.success.connect(self.open_plat_file_signal)
+        self.open_plat_thread.error.connect(lambda e: Dialogs.error(e))
         self.open_plat_thread.start()
 
     def open_plat_file_signal(self, data: pd.DataFrame):
-        Services.add_table_values(self.tableWidget, data, Consts.PLAT)
+        CompartorService.add_table_values(self.tableWidget, data, Constant.PLAT)
         self.plat_key_combo.addItems(data.columns)
 
-    def open_his_file(self):
-        self.his_file = Services.openfile()
-        self.open_his_thread = Services.GetFileDataThread()
+    def his_file_clicked(self):
+        self.his_file = Files.openfile()
+        self.open_his_thread = CompartorService.GetFileDataThread()
         self.open_his_thread.set_values(self.his_file)
-        self.open_his_thread.success_signal.connect(self.open_his_file_signal)
-        self.open_his_thread.error_signal.connect(lambda e: Services.error_signal(e))
+        self.open_his_thread.success.connect(self.open_his_file_signal)
+        self.open_his_thread.error.connect(lambda e: Dialogs.error(e))
         self.open_his_thread.start()
 
     def open_his_file_signal(self, data: pd.DataFrame):
-        Services.add_table_values(self.tableWidget, data, Consts.HIS)
+        CompartorService.add_table_values(self.tableWidget, data, Constant.HIS)
         self.his_key_combo.addItems(data.columns)
 
-    def open_template_file(self):
-        self.template_file = Services.openfile()
-        self.open_template_thread = Services.GetFileDataThread()
+    def template_file_clicked(self):
+        self.template_file = Files.openfile()
+        self.open_template_thread = CompartorService.GetFileDataThread()
         self.open_template_thread.set_values(self.template_file)
-        self.open_template_thread.success_signal.connect(self.open_template_file_signal)
-        self.open_template_thread.error_signal.connect(lambda e: Services.error_signal(e))
+        self.open_template_thread.success.connect(self.open_template_file_signal)
+        self.open_template_thread.error.connect(lambda e: Dialogs.error(e))
         self.open_template_thread.start()
 
     def open_template_file_signal(self, data: pd.DataFrame):
@@ -246,48 +256,62 @@ class Ui_MainWindow(object):
             curr_row_count = self.tableWidget.rowCount()
             self.tableWidget.insertRow(curr_row_count)
 
-            self.tableWidget.setItem(curr_row_count, 0, Services.not_edit_cell(v[Consts.FIELD_TABLE_NAME]))
-            self.tableWidget.setItem(curr_row_count, 1, Services.not_edit_cell(v[Consts.FIELD_NAME]))
-            self.tableWidget.setItem(curr_row_count, 2, Services.edit_cell(v[Consts.FILED_NEW_NAME]))
-            self.tableWidget.setItem(curr_row_count, 3, Services.edit_cell(v[Consts.FILED_AGG]))
-            self.tableWidget.setItem(curr_row_count, 4, Services.edit_cell(v[Consts.FILED_MATH]))
+            self.tableWidget.setItem(curr_row_count, 0, CompartorService.not_edit_cell(v[Constant.TABLE_TYPE]))
+            self.tableWidget.setItem(curr_row_count, 1, CompartorService.not_edit_cell(v[Constant.FIELD_NAME]))
+            self.tableWidget.setItem(curr_row_count, 2, CompartorService.edit_cell(v[Constant.FILED_NEW_NAME]))
+            self.tableWidget.setItem(curr_row_count, 3, CompartorService.edit_cell(v[Constant.AGG_CALC]))
+            self.tableWidget.setItem(curr_row_count, 4, CompartorService.edit_cell(v[Constant.MATH_CALC]))
 
-    def clear_all_table_rows(self):
+    def clear_table_clicked(self):
         self.tableWidget.setRowCount(0)
-        df = Services.get_table_values(self.tableWidget)
-        self.reset_table_values(df)
-
-    def clear_select_table_rows(self):
-        idxs = set(index.row() for index in self.tableWidget.selectedIndexes())
-        for i in sorted(idxs, reverse=True):
-            self.tableWidget.removeRow(i)
-
-        df = Services.get_table_values(self.tableWidget)
+        df = CompartorService.get_table_values(self.tableWidget)
         self.reset_table_values(df)
 
     def reset_table_values(self, df: pd.DataFrame):
-        plat_keys: pd.DataFrame = df.loc[df[Consts.FIELD_TABLE_NAME] == Consts.PLAT]
-        his_keys: pd.DataFrame = df.loc[df[Consts.FIELD_TABLE_NAME] == Consts.HIS]
+        plat_keys: pd.DataFrame = df.loc[df[Constant.TABLE_TYPE] == Constant.PLAT]
+        his_keys: pd.DataFrame = df.loc[df[Constant.TABLE_TYPE] == Constant.HIS]
 
         self.plat_key_combo.clear()
+        self.plat_key_combo.addItems(plat_keys[Constant.FIELD_NAME].values)
         self.his_key_combo.clear()
-        self.plat_key_combo.addItems(plat_keys[Consts.FIELD_NAME].values)
-        self.his_key_combo.addItems(his_keys[Consts.FIELD_NAME].values)
+        self.his_key_combo.addItems(his_keys[Constant.FIELD_NAME].values)
 
-    def execute_mission(self):
+    def execute_clicked(self):
         plat_key = self.plat_key_combo.currentText()
         his_key = self.his_key_combo.currentText()
-        output_filename = self.output_filename_edit.text()
-        df = Services.get_table_values(self.tableWidget)
+        filename = self.output_filename_edit.text()
+        df = CompartorService.get_table_values(self.tableWidget)
 
-        self.execute_thread = Services.ExecuteCompareThread()
-        self.execute_thread.set_values(df, plat_key, his_key, self.plat_file, self.his_file, output_filename)
-        self.execute_thread.error_signal.connect(lambda e: Services.error_signal(e))
+        self.execute_thread = CompartorService.ExecuteCompareThread()
+        self.execute_thread.set_values(df, plat_key, his_key, self.plat_file, self.his_file, filename,
+                                       self.action_timestamp.isChecked())
+        self.execute_thread.error.connect(lambda e: Dialogs.error(e))
+        self.execute_thread.success.connect(
+            lambda e: Dialogs.menu(e, self.mission_success_to_open_file, self.mission_success_to_open_folder))
         self.execute_thread.start()
+
+    def mission_success_to_open_file(self):
+        filename = self.output_filename_edit.text()
+        folder_path = Files.get_folder(self.plat_file)
+        if self.action_timestamp.isChecked():
+            output_path = os.path.join(folder_path, f"{filename}_差额对比表_{Files.format_time()}.xlsx")
+        else:
+            output_path = os.path.join(folder_path, f"{filename}_差额对比表.xlsx")
+        os.startfile(output_path)
+
+    def mission_success_to_open_folder(self):
+        folder_path = Files.get_folder(self.plat_file)
+        os.startfile(folder_path)
+
+    def action_file_formatter_trigger(self):
+        self.formatter_window = QtWidgets.QMainWindow()
+        formatter = Formatter.Ui_MainWindow()
+        formatter.setupUi(self.formatter_window)
+        self.formatter_window.show()
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "差额对比-v2.2.0-Create By 郑人滏"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "差额对比 V2.4.0 From 郑人滏"))
         self.label_1.setText(_translate("MainWindow", "上传"))
         self.open_plat_file_btn.setText(_translate("MainWindow", "上传招采文件"))
         self.open_his_file_btn.setText(_translate("MainWindow", "上传 HIS 文件"))
@@ -295,7 +319,7 @@ class Ui_MainWindow(object):
         self.label_3.setText(_translate("MainWindow", "字段"))
         self.tableWidget.setSortingEnabled(True)
         item = self.tableWidget.horizontalHeaderItem(0)
-        item.setText(_translate("MainWindow", "所属表名"))
+        item.setText(_translate("MainWindow", "表格类型"))
         item = self.tableWidget.horizontalHeaderItem(1)
         item.setText(_translate("MainWindow", "字段名称"))
         item = self.tableWidget.horizontalHeaderItem(2)
@@ -304,12 +328,14 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "聚合计算"))
         item = self.tableWidget.horizontalHeaderItem(4)
         item.setText(_translate("MainWindow", "逻辑计算"))
-        self.add_field_btn.setText(_translate("MainWindow", "添加一行"))
-        self.del_select_btn.setText(_translate("MainWindow", "删除所选行"))
         self.clear_table_btn.setText(_translate("MainWindow", "清除表格"))
         self.label_2.setText(_translate("MainWindow", "连接"))
         self.plat_key_label.setText(_translate("MainWindow", "招采关键字"))
         self.his_key_label.setText(_translate("MainWindow", "HIS 关键字"))
         self.label_4.setText(_translate("MainWindow", "输出"))
-        self.output_filename_label.setText(_translate("MainWindow", "输出文件名"))
+        self.output_filename_label.setText(_translate("MainWindow", "文件名"))
         self.execute_btn.setText(_translate("MainWindow", "执行任务"))
+        self.menu_2.setTitle(_translate("MainWindow", "工具"))
+        self.menu_1.setTitle(_translate("MainWindow", "设置"))
+        self.action_timestamp.setText(_translate("MainWindow", "文件名携带时间戳"))
+        self.action_file_formatter.setText(_translate("MainWindow", "打开重组表格工具"))

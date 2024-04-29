@@ -1,6 +1,5 @@
 import builtins
 import re
-from datetime import datetime
 
 import pandas as pd
 
@@ -27,17 +26,3 @@ def digitize(_text):
 def validate(df: pd.DataFrame):
     df.columns = df.columns.str.replace('[\(\[（]', '_', regex=True).str.replace('[\)\]）]', '', regex=True)
     return df
-
-
-def get_filename(filepath: str):
-    filename = re.findall(r'[^\\/:*?"<>|\r\n]+$', filepath)[0].split('.')[0]
-    return filename
-
-
-def get_folder(filepath: str):
-    folder_path = "/".join(filepath.split("/")[:-1]) + "/"
-    return folder_path
-
-
-def format_time(_formatter="%m-%d-%H-%M-%S"):
-    return datetime.now().strftime(_formatter)

@@ -3,7 +3,7 @@ import sys
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 
-from ui import UI
+from ui import Comparator
 
 
 def exception_hook(exctype, value, traceback):
@@ -19,8 +19,8 @@ def exception_hook(exctype, value, traceback):
 def main():
     app = QtWidgets.QApplication(sys.argv)
     window = QtWidgets.QMainWindow()
-    ui = UI.Ui_MainWindow()
-    ui.setupUi(window)
+    comparator = Comparator.Ui_MainWindow()
+    comparator.setupUi(window)
     window.show()
 
     sys.excepthook = exception_hook
