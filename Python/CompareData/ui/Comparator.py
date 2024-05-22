@@ -6,7 +6,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 from service import CompartorService
 from ui import Formatter
-from utils import Dialogs, Constant, Files
+from utils import Files, Dialogs, Constant
 
 
 # Form implementation generated from reading ui file 'd:\Development\smalltools\Python\CompareData\ui\Comparator.ui'
@@ -193,6 +193,7 @@ class Ui_MainWindow(object):
         self.menu_1.setObjectName("menu_1")
         MainWindow.setMenuBar(self.menuBar)
         self.statusBar = QtWidgets.QStatusBar(MainWindow)
+        self.statusBar.setStyleSheet("color: red;")
         self.statusBar.setObjectName("statusBar")
         MainWindow.setStatusBar(self.statusBar)
         self.action_timestamp = QtWidgets.QAction(MainWindow)
@@ -222,6 +223,7 @@ class Ui_MainWindow(object):
         self.open_plat_thread.success.connect(self.open_plat_file_signal)
         self.open_plat_thread.error.connect(lambda e: Dialogs.error(e))
         self.open_plat_thread.start()
+        self.statusBar.showMessage("已上传招采文件。")
 
     def open_plat_file_signal(self, data: pd.DataFrame):
         CompartorService.add_table_values(self.tableWidget, data, Constant.PLAT)
@@ -234,6 +236,7 @@ class Ui_MainWindow(object):
         self.open_his_thread.success.connect(self.open_his_file_signal)
         self.open_his_thread.error.connect(lambda e: Dialogs.error(e))
         self.open_his_thread.start()
+        self.statusBar.showMessage("已上传 HIS 文件。")
 
     def open_his_file_signal(self, data: pd.DataFrame):
         CompartorService.add_table_values(self.tableWidget, data, Constant.HIS)
@@ -261,6 +264,7 @@ class Ui_MainWindow(object):
             self.tableWidget.setItem(curr_row_count, 2, CompartorService.edit_cell(v[Constant.FILED_NEW_NAME]))
             self.tableWidget.setItem(curr_row_count, 3, CompartorService.edit_cell(v[Constant.AGG_CALC]))
             self.tableWidget.setItem(curr_row_count, 4, CompartorService.edit_cell(v[Constant.MATH_CALC]))
+        self.statusBar.showMessage("已上传模板文件。")
 
     def clear_table_clicked(self):
         self.tableWidget.setRowCount(0)
@@ -275,6 +279,7 @@ class Ui_MainWindow(object):
         self.plat_key_combo.addItems(plat_keys[Constant.FIELD_NAME].values)
         self.his_key_combo.clear()
         self.his_key_combo.addItems(his_keys[Constant.FIELD_NAME].values)
+        self.statusBar.showMessage("已清除表格数据。")
 
     def execute_clicked(self):
         plat_key = self.plat_key_combo.currentText()
@@ -297,17 +302,18 @@ class Ui_MainWindow(object):
             output_path = os.path.join(folder_path, f"{filename}_差额对比表_{Files.format_time()}.xlsx")
         else:
             output_path = os.path.join(folder_path, f"{filename}_差额对比表.xlsx")
+        self.statusBar.showMessage("已打开指定路径，本次操作已完成。")
         os.startfile(output_path)
 
     def mission_success_to_open_folder(self):
         folder_path = Files.get_folder(self.plat_file)
+        self.statusBar.showMessage("已打开指定路径，本次操作已完成。")
         os.startfile(folder_path)
 
     def action_file_formatter_trigger(self):
-        self.formatter_window = QtWidgets.QMainWindow()
-        formatter = Formatter.Ui_MainWindow()
-        formatter.setupUi(self.formatter_window)
-        self.formatter_window.show()
+        self.formatter = Formatter.Ui_MainWindow()
+        self.formatter.window.show()
+        self.statusBar.showMessage("已打开重组表格工具。")
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate

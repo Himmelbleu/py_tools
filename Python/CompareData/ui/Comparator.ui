@@ -336,7 +336,11 @@
    <addaction name="menu_1"/>
    <addaction name="menu_2"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QStatusBar" name="statusBar">
+   <property name="styleSheet">
+    <string notr="true">color: red;</string>
+   </property>
+  </widget>
   <action name="action_timestamp">
    <property name="checkable">
     <bool>true</bool>
