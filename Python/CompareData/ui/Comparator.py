@@ -223,11 +223,11 @@ class Ui_MainWindow(object):
         self.open_plat_thread.success.connect(self.open_plat_file_signal)
         self.open_plat_thread.error.connect(lambda e: Dialogs.error(e))
         self.open_plat_thread.start()
-        self.statusBar.showMessage("已上传招采文件。")
 
     def open_plat_file_signal(self, data: pd.DataFrame):
         CompartorService.add_table_values(self.tableWidget, data, Constant.PLAT)
         self.plat_key_combo.addItems(data.columns)
+        self.statusBar.showMessage("已上传招采文件。")
 
     def his_file_clicked(self):
         self.his_file = Files.openfile()
@@ -236,11 +236,11 @@ class Ui_MainWindow(object):
         self.open_his_thread.success.connect(self.open_his_file_signal)
         self.open_his_thread.error.connect(lambda e: Dialogs.error(e))
         self.open_his_thread.start()
-        self.statusBar.showMessage("已上传 HIS 文件。")
 
     def open_his_file_signal(self, data: pd.DataFrame):
         CompartorService.add_table_values(self.tableWidget, data, Constant.HIS)
         self.his_key_combo.addItems(data.columns)
+        self.statusBar.showMessage("已上传 HIS 文件。")
 
     def template_file_clicked(self):
         self.template_file = Files.openfile()
@@ -302,13 +302,13 @@ class Ui_MainWindow(object):
             output_path = os.path.join(folder_path, f"{filename}_差额对比表_{Files.format_time()}.xlsx")
         else:
             output_path = os.path.join(folder_path, f"{filename}_差额对比表.xlsx")
-        self.statusBar.showMessage("已打开指定路径，本次操作已完成。")
         os.startfile(output_path)
+        self.statusBar.showMessage("已经打开指定文件。")
 
     def mission_success_to_open_folder(self):
         folder_path = Files.get_folder(self.plat_file)
-        self.statusBar.showMessage("已打开指定路径，本次操作已完成。")
         os.startfile(folder_path)
+        self.statusBar.showMessage("已经打开指定文件夹。")
 
     def action_file_formatter_trigger(self):
         self.formatter = Formatter.Ui_MainWindow()

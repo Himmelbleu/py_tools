@@ -68,7 +68,6 @@ class Ui_MainWindow:
 
     def upload_btn_clicked(self):
         self.filepath = Files.openfile()
-        self.status_bar.showMessage("成功上传需要重组的表格。")
 
     def exec_btn_clicked(self):
         self.thread = FormatterService.FormatThread()
@@ -81,11 +80,11 @@ class Ui_MainWindow:
     def mission_success_to_open_file(self):
         output_path = os.path.join(Files.get_folder(self.filepath), f"{Files.get_filename(self.filepath)}_格式化.xlsx")
         os.startfile(output_path)
-        self.status_bar.showMessage("已经打开指定文件，可关闭该窗口。")
+        self.status_bar.showMessage("已经打开指定文件。")
 
     def mission_success_to_open_folder(self):
         os.startfile(Files.get_folder(self.filepath))
-        self.status_bar.showMessage("已经打开指定文件夹，可关闭该窗口。")
+        self.status_bar.showMessage("已经打开指定文件夹。")
 
     def retranslate_ui(self):
         _translate = QtCore.QCoreApplication.translate
