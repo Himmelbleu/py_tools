@@ -4,7 +4,6 @@ import numpy as np
 import pandas as pd
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QTableWidgetItem
 
 from utils import Maths, Files, Constant
@@ -21,8 +20,8 @@ class GetFileDataThread(QtCore.QThread):
         try:
             df = Maths.validate(pd.read_excel(self.input_path))
             self.success.emit(df)
-        except Exception as error_message:
-            self.error.emit(error_message)
+        except Exception as error_msg:
+            self.error.emit(error_msg)
 
 
 class ExecuteCompareThread(QtCore.QThread):
@@ -85,7 +84,7 @@ class ExecuteCompareThread(QtCore.QThread):
             combine_cols = Maths.validate(self.df_data.loc[self.df_data[Constant.TABLE_TYPE] == ''])
             pre_combine_data = self.pretreatment(combine_cols, merged_data)
             pre_combine_data['匹配情况'].replace(
-                {'left_only': '只在招采', 'right_only': '只在HIS', 'both': '共有'}, inplace=True)
+                {'left_only': '只在招采', 'right_only': '只在HIS', 'both': '两者共有'}, inplace=True)
             if self.is_timestamp:
                 output_path = os.path.join(Files.get_folder(self.plat_file),
                                            f"{self.filename}_差额对比表_{Files.format_time()}.xlsx")
@@ -94,14 +93,13 @@ class ExecuteCompareThread(QtCore.QThread):
                                            f"{self.filename}_差额对比表.xlsx")
             pre_combine_data.to_excel(output_path, index=False)
 
-            self.success.emit(f'文件路径保存在: "{output_path}"')
+            self.success.emit(output_path)
         except Exception as error_msg:
             self.error.emit(error_msg)
 
 
 def not_edit_cell(val: str):
     item = QTableWidgetItem(val)
-    item.setBackground(QColor(220, 220, 220, 50))
     item.setFlags(item.flags() & ~Qt.ItemIsEditable)
     return item
 
@@ -117,16 +115,9 @@ def add_table_values(table: QtWidgets.QTableWidget, df: pd.DataFrame, col_val: s
 
         table.setItem(curr_row_count, 0, not_edit_cell(col_val))
         table.setItem(curr_row_count, 1, not_edit_cell(i))
-
-
-def add_table_value(table: QtWidgets.QTableWidget):
-    curr_row_count = table.rowCount()
-    table.insertRow(curr_row_count)
-
-    table.setItem(curr_row_count, 0, not_edit_cell(''))
-    table.setItem(curr_row_count, 1, edit_cell(''))
-    table.setItem(curr_row_count, 2, not_edit_cell(''))
-    table.setItem(curr_row_count, 3, not_edit_cell(''))
+        table.setItem(curr_row_count, 2, not_edit_cell(i))
+        table.setItem(curr_row_count, 3, not_edit_cell(i))
+        table.setItem(curr_row_count, 4, not_edit_cell(i))
 
 
 def get_table_values(table: QtWidgets.QTableWidget):

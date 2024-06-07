@@ -12,10 +12,10 @@ def info(msg):
 def menu(msg, open_file, open_folder):
     msg_box = QMessageBox(QMessageBox.Information, 'Success', f'Info: \n{msg}\n\n')
     btn1 = msg_box.addButton('打开该文件', QMessageBox.YesRole)
-    msg_box.addButton('打开文件夹', QMessageBox.YesRole)
+    btn2 = msg_box.addButton('打开文件夹', QMessageBox.YesRole)
     msg_box.exec_()
 
     if msg_box.clickedButton() == btn1:
         open_file()
-    else:
+    elif msg_box.clickedButton() == btn2:
         open_folder()

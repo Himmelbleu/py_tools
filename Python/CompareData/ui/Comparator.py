@@ -94,17 +94,6 @@ class Ui_MainWindow(object):
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(4, item)
         self.verticalLayout_4.addWidget(self.tableWidget)
-        self.horizontalLayout = QtWidgets.QHBoxLayout()
-        self.horizontalLayout.setObjectName("horizontalLayout")
-        self.clear_table_btn = QtWidgets.QPushButton(self.verticalLayout_1)
-        font = QtGui.QFont()
-        font.setPointSize(11)
-        self.clear_table_btn.setFont(font)
-        self.clear_table_btn.setAutoFillBackground(False)
-        self.clear_table_btn.setStyleSheet("")
-        self.clear_table_btn.setObjectName("clear_table_btn")
-        self.horizontalLayout.addWidget(self.clear_table_btn)
-        self.verticalLayout_4.addLayout(self.horizontalLayout)
         self.v_2.addLayout(self.verticalLayout_4)
         self.verticalLayout_3 = QtWidgets.QVBoxLayout()
         self.verticalLayout_3.setSpacing(15)
@@ -212,7 +201,6 @@ class Ui_MainWindow(object):
         self.open_plat_file_btn.clicked.connect(self.plat_file_clicked)
         self.open_his_file_btn.clicked.connect(self.his_file_clicked)
         self.open_template_file_btn.clicked.connect(self.template_file_clicked)
-        self.clear_table_btn.clicked.connect(self.clear_table_clicked)
         self.execute_btn.clicked.connect(self.execute_clicked)
         self.action_file_formatter.triggered.connect(self.action_file_formatter_trigger)
 
@@ -225,7 +213,6 @@ class Ui_MainWindow(object):
         self.open_plat_thread.start()
 
     def open_plat_file_signal(self, data: pd.DataFrame):
-        CompartorService.add_table_values(self.tableWidget, data, Constant.PLAT)
         self.plat_key_combo.addItems(data.columns)
         self.statusBar.showMessage("已上传招采文件。")
 
@@ -238,7 +225,6 @@ class Ui_MainWindow(object):
         self.open_his_thread.start()
 
     def open_his_file_signal(self, data: pd.DataFrame):
-        CompartorService.add_table_values(self.tableWidget, data, Constant.HIS)
         self.his_key_combo.addItems(data.columns)
         self.statusBar.showMessage("已上传 HIS 文件。")
 
@@ -261,15 +247,10 @@ class Ui_MainWindow(object):
 
             self.tableWidget.setItem(curr_row_count, 0, CompartorService.not_edit_cell(v[Constant.TABLE_TYPE]))
             self.tableWidget.setItem(curr_row_count, 1, CompartorService.not_edit_cell(v[Constant.FIELD_NAME]))
-            self.tableWidget.setItem(curr_row_count, 2, CompartorService.edit_cell(v[Constant.FILED_NEW_NAME]))
-            self.tableWidget.setItem(curr_row_count, 3, CompartorService.edit_cell(v[Constant.AGG_CALC]))
-            self.tableWidget.setItem(curr_row_count, 4, CompartorService.edit_cell(v[Constant.MATH_CALC]))
+            self.tableWidget.setItem(curr_row_count, 2, CompartorService.not_edit_cell(v[Constant.FILED_NEW_NAME]))
+            self.tableWidget.setItem(curr_row_count, 3, CompartorService.not_edit_cell(v[Constant.AGG_CALC]))
+            self.tableWidget.setItem(curr_row_count, 4, CompartorService.not_edit_cell(v[Constant.MATH_CALC]))
         self.statusBar.showMessage("已上传模板文件。")
-
-    def clear_table_clicked(self):
-        self.tableWidget.setRowCount(0)
-        df = CompartorService.get_table_values(self.tableWidget)
-        self.reset_table_values(df)
 
     def reset_table_values(self, df: pd.DataFrame):
         plat_keys: pd.DataFrame = df.loc[df[Constant.TABLE_TYPE] == Constant.PLAT]
@@ -279,7 +260,6 @@ class Ui_MainWindow(object):
         self.plat_key_combo.addItems(plat_keys[Constant.FIELD_NAME].values)
         self.his_key_combo.clear()
         self.his_key_combo.addItems(his_keys[Constant.FIELD_NAME].values)
-        self.statusBar.showMessage("已清除表格数据。")
 
     def execute_clicked(self):
         plat_key = self.plat_key_combo.currentText()
@@ -290,24 +270,21 @@ class Ui_MainWindow(object):
         self.execute_thread = CompartorService.ExecuteCompareThread()
         self.execute_thread.set_values(df, plat_key, his_key, self.plat_file, self.his_file, filename,
                                        self.action_timestamp.isChecked())
+        self.execute_thread.success.connect(self.execute_signal)
         self.execute_thread.error.connect(lambda e: Dialogs.error(e))
-        self.execute_thread.success.connect(
-            lambda e: Dialogs.menu(e, self.mission_success_to_open_file, self.mission_success_to_open_folder))
         self.execute_thread.start()
 
+    def execute_signal(self, output_path):
+        self.output_path = output_path
+        Dialogs.menu(f'文件路径保存在: {output_path}', self.mission_success_to_open_file,
+                     self.mission_success_to_open_folder)
+
     def mission_success_to_open_file(self):
-        filename = self.output_filename_edit.text()
-        folder_path = Files.get_folder(self.plat_file)
-        if self.action_timestamp.isChecked():
-            output_path = os.path.join(folder_path, f"{filename}_差额对比表_{Files.format_time()}.xlsx")
-        else:
-            output_path = os.path.join(folder_path, f"{filename}_差额对比表.xlsx")
-        os.startfile(output_path)
+        os.startfile(self.output_path)
         self.statusBar.showMessage("已经打开指定文件。")
 
     def mission_success_to_open_folder(self):
-        folder_path = Files.get_folder(self.plat_file)
-        os.startfile(folder_path)
+        os.startfile(self.output_path)
         self.statusBar.showMessage("已经打开指定文件夹。")
 
     def action_file_formatter_trigger(self):
@@ -317,7 +294,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "差额对比 V2.4.0 From 郑人滏"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "吐鲁番市药品耗材差额对比程序 - V2.4.1 By 郑人滏"))
         self.label_1.setText(_translate("MainWindow", "上传"))
         self.open_plat_file_btn.setText(_translate("MainWindow", "上传招采文件"))
         self.open_his_file_btn.setText(_translate("MainWindow", "上传 HIS 文件"))
@@ -334,7 +311,6 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "聚合计算"))
         item = self.tableWidget.horizontalHeaderItem(4)
         item.setText(_translate("MainWindow", "逻辑计算"))
-        self.clear_table_btn.setText(_translate("MainWindow", "清除表格"))
         self.label_2.setText(_translate("MainWindow", "连接"))
         self.plat_key_label.setText(_translate("MainWindow", "招采关键字"))
         self.his_key_label.setText(_translate("MainWindow", "HIS 关键字"))

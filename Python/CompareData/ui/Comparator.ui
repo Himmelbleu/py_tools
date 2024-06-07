@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>差额对比 V2.4.0 From 郑人滏</string>
+   <string>吐鲁番市药品耗材差额对比程序 - V2.4.1 By 郑人滏</string>
   </property>
   <widget class="QWidget" name="verticalLayout_1">
    <layout class="QVBoxLayout" name="v_2" stretch="0,0,0,0">
@@ -161,28 +161,6 @@
          </property>
         </column>
        </widget>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="QPushButton" name="clear_table_btn">
-          <property name="font">
-           <font>
-            <pointsize>11</pointsize>
-           </font>
-          </property>
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="styleSheet">
-           <string notr="true"/>
-          </property>
-          <property name="text">
-           <string>清除表格</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
       </item>
      </layout>
     </item>

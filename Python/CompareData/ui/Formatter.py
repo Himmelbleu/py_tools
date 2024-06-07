@@ -72,23 +72,26 @@ class Ui_MainWindow:
     def exec_btn_clicked(self):
         self.thread = FormatterService.FormatThread()
         self.thread.set_values(self.filepath)
+        self.thread.success.connect(self.exec_btn_signal)
         self.thread.error.connect(lambda e: Dialogs.error(e))
-        self.thread.success.connect(
-            lambda e: Dialogs.menu(e, self.mission_success_to_open_file, self.mission_success_to_open_folder))
         self.thread.start()
 
+    def exec_btn_signal(self, output_path):
+        self.output_path = output_path
+        Dialogs.menu(f'文件路径保存在: {output_path}', self.mission_success_to_open_file,
+                     self.mission_success_to_open_folder)
+
     def mission_success_to_open_file(self):
-        output_path = os.path.join(Files.get_folder(self.filepath), f"{Files.get_filename(self.filepath)}_格式化.xlsx")
-        os.startfile(output_path)
+        os.startfile(self.output_path)
         self.status_bar.showMessage("已经打开指定文件。")
 
     def mission_success_to_open_folder(self):
-        os.startfile(Files.get_folder(self.filepath))
+        os.startfile(self.output_path)
         self.status_bar.showMessage("已经打开指定文件夹。")
 
     def retranslate_ui(self):
         _translate = QtCore.QCoreApplication.translate
-        self.window.setWindowTitle(_translate("MainWindow", "重组表格工具 V1.0.0 From 郑人滏"))
+        self.window.setWindowTitle(_translate("MainWindow", "吐鲁番市特殊药品表格处理程序 - V1.0.1 By 郑人滏"))
         self.label_1.setText(_translate("MainWindow", "上传"))
         self.upload_btn.setText(_translate("MainWindow", "上传文件"))
         self.label_2.setText(_translate("MainWindow", "输出"))

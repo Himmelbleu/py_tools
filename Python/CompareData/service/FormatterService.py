@@ -12,9 +12,13 @@ class FormatThread(QtCore.QThread):
 
     def set_values(self, filepath):
         self.filepath = filepath
-        self.data = pd.read_excel(self.filepath, converters={'国家医保编码': str, '药品监管码': str})
 
     def run(self):
+        path = os.path.join(Files.get_folder(self.filepath),
+                            f"{Files.get_filename(self.filepath)}_新建_{Files.format_time()}.xls").replace('/', '\\')
+        Files.to_xls(self.filepath, path)
+        data = pd.read_excel(path, converters={'国家医保编码': str, '药品监管码': str})
+
         try:
             supplier = ''
             project_type = ''
@@ -32,7 +36,7 @@ class FormatThread(QtCore.QThread):
 
             new_data = []
 
-            for index, row in self.data.iterrows():
+            for index, row in data.iterrows():
                 if str(row['入库数量']) == 'nan':
                     project_type = ''
                     health_code = ''
@@ -115,9 +119,10 @@ class FormatThread(QtCore.QThread):
 
                 new_data.append(row)
 
-            outpath = os.path.join(Files.get_folder(self.filepath),
-                                   f"{Files.get_filename(self.filepath)}_格式化.xlsx")
-            pd.DataFrame(new_data).to_excel(rf"{outpath}", index=False)
-            self.success.emit(f'文件路径保存在: "{outpath}"')
+            output_path = os.path.join(Files.get_folder(self.filepath),
+                                       f"{Files.get_filename(self.filepath)}_格式化_{Files.format_time()}.xlsx")
+            pd.DataFrame(new_data).to_excel(rf"{output_path}", index=False)
+
+            self.success.emit(output_path)
         except Exception as error_msg:
             self.error.emit(error_msg)

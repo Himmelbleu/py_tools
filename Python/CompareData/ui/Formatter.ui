@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>重组表格工具 V1.0.0 From 郑人滏</string>
+   <string>吐鲁番市特殊药品表格处理程序 - V1.0.1 By 郑人滏</string>
   </property>
   <widget class="QWidget" name="verticalWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
