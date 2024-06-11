@@ -25,7 +25,8 @@ class Ui_MainWindow(object):
         self.window.setObjectName("MainWindow")
         self.window.resize(560, 257)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("./icon/content.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("D:\\Development\\smalltools\\Python\\CompareData\\icon\\content.png"),
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.window.setWindowIcon(icon)
         self.verticalWidget = QtWidgets.QWidget(self.window)
         self.verticalWidget.setObjectName("verticalWidget")
@@ -47,7 +48,8 @@ class Ui_MainWindow(object):
         font.setPointSize(10)
         self.upload_content_btn.setFont(font)
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("./icon/upload.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap("D:\\Development\\smalltools\\Python\\CompareData\\icon\\upload.png"),
+                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.upload_content_btn.setIcon(icon1)
         self.upload_content_btn.setObjectName("upload_content_btn")
         self.verticalLayout.addWidget(self.upload_content_btn)
@@ -56,7 +58,8 @@ class Ui_MainWindow(object):
         font.setPointSize(10)
         self.exec_content_btn.setFont(font)
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("./icon/execute.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap("D:\\Development\\smalltools\\Python\\CompareData\\icon\\execute.png"),
+                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.exec_content_btn.setIcon(icon2)
         self.exec_content_btn.setObjectName("exec_content_btn")
         self.verticalLayout.addWidget(self.exec_content_btn)

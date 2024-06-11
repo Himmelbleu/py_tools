@@ -29,16 +29,14 @@ def format_time(_formatter="%m-%d-%H-%M"):
 
 
 def to_xls(input_file, output_file):
-    excel = win32.gencache.EnsureDispatch('Excel.Application')
-    excel.Visible = False
+    app = win32.gencache.EnsureDispatch('ket.Application')
+    app.Visible = False
 
     try:
-        workbook = excel.Workbooks.Open(input_file)
+        workbook = app.Workbooks.Open(input_file)
         workbook.SaveAs(output_file, FileFormat=51)
-        workbook.Close(False)
+        workbook.Close()
     except Exception as e:
         Dialogs.error(e)
     finally:
-        excel.Application.Quit()
-        del workbook
-        del excel
+        app.Quit()

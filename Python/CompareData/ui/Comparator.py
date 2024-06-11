@@ -22,7 +22,7 @@ class Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(605, 690)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("./icon/ybj.png"),
+        icon.addPixmap(QtGui.QPixmap("D:\\Development\\smalltools\\Python\\CompareData\\icon\\ybj.png"),
                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         self.verticalLayout_1 = QtWidgets.QWidget(MainWindow)
@@ -50,7 +50,7 @@ class Ui_MainWindow(object):
         font.setPointSize(11)
         self.open_plat_file_btn.setFont(font)
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("./icon/plat.png"),
+        icon1.addPixmap(QtGui.QPixmap("D:\\Development\\smalltools\\Python\\CompareData\\icon\\plat.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.open_plat_file_btn.setIcon(icon1)
         self.open_plat_file_btn.setObjectName("open_plat_file_btn")
@@ -60,7 +60,7 @@ class Ui_MainWindow(object):
         font.setPointSize(11)
         self.open_his_file_btn.setFont(font)
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("./icon/his.png"),
+        icon2.addPixmap(QtGui.QPixmap("D:\\Development\\smalltools\\Python\\CompareData\\icon\\his.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.open_his_file_btn.setIcon(icon2)
         self.open_his_file_btn.setIconSize(QtCore.QSize(16, 16))
@@ -71,7 +71,7 @@ class Ui_MainWindow(object):
         font.setPointSize(11)
         self.open_template_file_btn.setFont(font)
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap("./icon/excel2.png"),
+        icon3.addPixmap(QtGui.QPixmap("D:\\Development\\smalltools\\Python\\CompareData\\icon\\excel2.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.open_template_file_btn.setIcon(icon3)
         self.open_template_file_btn.setObjectName("open_template_file_btn")
@@ -186,7 +186,7 @@ class Ui_MainWindow(object):
         font.setPointSize(11)
         self.execute_btn.setFont(font)
         icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap("./icon/execute.png"),
+        icon4.addPixmap(QtGui.QPixmap("D:\\Development\\smalltools\\Python\\CompareData\\icon\\execute.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.execute_btn.setIcon(icon4)
         self.execute_btn.setObjectName("execute_btn")
@@ -211,19 +211,19 @@ class Ui_MainWindow(object):
         self.action_timestamp.setObjectName("action_timestamp")
         self.action_file_formatter = QtWidgets.QAction(MainWindow)
         icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap("./icon/excel.png"),
+        icon5.addPixmap(QtGui.QPixmap("D:\\Development\\smalltools\\Python\\CompareData\\icon\\excel.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.action_file_formatter.setIcon(icon5)
         self.action_file_formatter.setObjectName("action_file_formatter")
         self.action_about = QtWidgets.QAction(MainWindow)
         icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap("./icon/about.png"),
+        icon6.addPixmap(QtGui.QPixmap("D:\\Development\\smalltools\\Python\\CompareData\\icon\\about.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.action_about.setIcon(icon6)
         self.action_about.setObjectName("action_about")
         self.actionaction_file_content = QtWidgets.QAction(MainWindow)
         icon7 = QtGui.QIcon()
-        icon7.addPixmap(QtGui.QPixmap("./icon/content.png"),
+        icon7.addPixmap(QtGui.QPixmap("D:\\Development\\smalltools\\Python\\CompareData\\icon\\content.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionaction_file_content.setIcon(icon7)
         self.actionaction_file_content.setObjectName("actionaction_file_content")

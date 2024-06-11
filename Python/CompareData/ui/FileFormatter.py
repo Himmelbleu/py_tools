@@ -25,7 +25,7 @@ class Ui_MainWindow(object):
         self.window.setObjectName("self.window")
         self.window.resize(560, 318)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("./icon/excel.png"),
+        icon.addPixmap(QtGui.QPixmap("D:\\Development\\smalltools\\Python\\CompareData\\icon\\excel.png"),
                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.window.setWindowIcon(icon)
         self.verticalWidget = QtWidgets.QWidget(self.window)
@@ -48,7 +48,7 @@ class Ui_MainWindow(object):
         font.setPointSize(10)
         self.upload_format_btn.setFont(font)
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("./icon/upload.png"),
+        icon1.addPixmap(QtGui.QPixmap("D:\\Development\\smalltools\\Python\\CompareData\\icon\\upload.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.upload_format_btn.setIcon(icon1)
         self.upload_format_btn.setObjectName("upload_format_btn")
@@ -58,7 +58,7 @@ class Ui_MainWindow(object):
         font.setPointSize(10)
         self.exec_format_btn.setFont(font)
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("./icon/execute.png"),
+        icon2.addPixmap(QtGui.QPixmap("D:\\Development\\smalltools\\Python\\CompareData\\icon\\execute.png"),
                         QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.exec_format_btn.setIcon(icon2)
         self.exec_format_btn.setObjectName("exec_format_btn")

@@ -15,7 +15,6 @@ class FileFormatterThread(QtCore.QThread):
 
     def run(self):
         try:
-            print(Files.get_folder(self.filepath))
             output_filename = f"表格格式处理结果_{Files.format_time()}.xlsx"
             output_filepath = os.path.join(Files.get_folder(self.filepath), output_filename).replace('/', '\\')
 
