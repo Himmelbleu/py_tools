@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>吐鲁番市药品耗材差额对比程序 - V2.4.1 By 郑人滏</string>
+   <string>吐鲁番市药品耗材差额对比程序 - V2.4.3</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../icon/ybj.png</normaloff>../icon/ybj.png</iconset>
   </property>
   <widget class="QWidget" name="verticalLayout_1">
    <layout class="QVBoxLayout" name="v_2" stretch="0,0,0,0">
@@ -55,6 +59,10 @@
           <property name="text">
            <string>上传招采文件</string>
           </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>../icon/plat.png</normaloff>../icon/plat.png</iconset>
+          </property>
          </widget>
         </item>
         <item>
@@ -66,6 +74,10 @@
           </property>
           <property name="text">
            <string>上传 HIS 文件</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>../icon/his.png</normaloff>../icon/his.png</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -84,6 +96,10 @@
           </property>
           <property name="text">
            <string>上传模板文件</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>../icon/excel2.png</normaloff>../icon/excel2.png</iconset>
           </property>
          </widget>
         </item>
@@ -284,6 +300,10 @@
         <property name="text">
          <string>执行任务</string>
         </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../icon/execute.png</normaloff>../icon/execute.png</iconset>
+        </property>
        </widget>
       </item>
      </layout>
@@ -299,20 +319,21 @@
      <height>22</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menu_2">
+   <widget class="QMenu" name="menu_1">
     <property name="title">
      <string>工具</string>
     </property>
     <addaction name="action_file_formatter"/>
+    <addaction name="actionaction_file_content"/>
    </widget>
-   <widget class="QMenu" name="menu_1">
+   <widget class="QMenu" name="menu">
     <property name="title">
-     <string extracomment="123123">设置</string>
+     <string>帮助</string>
     </property>
-    <addaction name="action_timestamp"/>
+    <addaction name="action_about"/>
    </widget>
    <addaction name="menu_1"/>
-   <addaction name="menu_2"/>
+   <addaction name="menu"/>
   </widget>
   <widget class="QStatusBar" name="statusBar">
    <property name="styleSheet">
@@ -331,8 +352,30 @@
    </property>
   </action>
   <action name="action_file_formatter">
+   <property name="icon">
+    <iconset>
+     <normaloff>../icon/excel.png</normaloff>../icon/excel.png</iconset>
+   </property>
    <property name="text">
-    <string>打开重组表格工具</string>
+    <string>表格格式处理</string>
+   </property>
+  </action>
+  <action name="action_about">
+   <property name="icon">
+    <iconset>
+     <normaloff>../icon/about.png</normaloff>../icon/about.png</iconset>
+   </property>
+   <property name="text">
+    <string>关于该程序</string>
+   </property>
+  </action>
+  <action name="actionaction_file_content">
+   <property name="icon">
+    <iconset>
+     <normaloff>../icon/content.png</normaloff>../icon/content.png</iconset>
+   </property>
+   <property name="text">
+    <string>表格内容处理</string>
    </property>
   </action>
  </widget>

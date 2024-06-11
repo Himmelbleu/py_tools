@@ -6,7 +6,7 @@ from PyQt5 import QtCore
 from utils import Files
 
 
-class FormatThread(QtCore.QThread):
+class FileFormatterThread(QtCore.QThread):
     error = QtCore.pyqtSignal(Exception, name='error')
     success = QtCore.pyqtSignal(str, name='success')
 
@@ -14,10 +14,26 @@ class FormatThread(QtCore.QThread):
         self.filepath = filepath
 
     def run(self):
-        path = os.path.join(Files.get_folder(self.filepath),
-                            f"{Files.get_filename(self.filepath)}_新建_{Files.format_time()}.xls").replace('/', '\\')
-        Files.to_xls(self.filepath, path)
-        data = pd.read_excel(path, converters={'国家医保编码': str, '药品监管码': str})
+        try:
+            print(Files.get_folder(self.filepath))
+            output_filename = f"表格格式处理结果_{Files.format_time()}.xlsx"
+            output_filepath = os.path.join(Files.get_folder(self.filepath), output_filename).replace('/', '\\')
+
+            Files.to_xls(self.filepath, output_filepath)
+            self.success.emit(output_filepath)
+        except Exception as error_msg:
+            self.error.emit(error_msg)
+
+
+class FileContentFormatThread(QtCore.QThread):
+    error = QtCore.pyqtSignal(Exception, name='error')
+    success = QtCore.pyqtSignal(str, name='success')
+
+    def set_values(self, filepath):
+        self.filepath = filepath
+
+    def run(self):
+        data = pd.read_excel(self.filepath, converters={'国家医保编码': str, '药品监管码': str})
 
         try:
             supplier = ''
@@ -119,10 +135,10 @@ class FormatThread(QtCore.QThread):
 
                 new_data.append(row)
 
-            output_path = os.path.join(Files.get_folder(self.filepath),
-                                       f"{Files.get_filename(self.filepath)}_格式化_{Files.format_time()}.xlsx")
-            pd.DataFrame(new_data).to_excel(rf"{output_path}", index=False)
+            output_filename = f"表格内容处理结果_{Files.format_time()}.xlsx"
+            output_filepath = os.path.join(Files.get_folder(self.filepath), output_filename)
+            pd.DataFrame(new_data).to_excel(rf"{output_filepath}", index=False)
 
-            self.success.emit(output_path)
+            self.success.emit(output_filepath)
         except Exception as error_msg:
             self.error.emit(error_msg)

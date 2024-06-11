@@ -28,14 +28,13 @@ class ExecuteCompareThread(QtCore.QThread):
     error = QtCore.pyqtSignal(Exception, name='error')
     success = QtCore.pyqtSignal(str, name='success')
 
-    def set_values(self, df_data, plat_key, his_key, plat_file, his_file, filename, is_timestamp):
+    def set_values(self, df_data, plat_key, his_key, plat_file, his_file, filename):
         self.df_data = df_data
         self.plat_key = plat_key
         self.his_key = his_key
         self.plat_file = plat_file
         self.his_file = his_file
         self.filename = filename
-        self.is_timestamp = is_timestamp
 
     def exec_context(self, df: pd.DataFrame, col: str, formula: str):
         exec(f"df['{col}'] = {formula}")
@@ -85,12 +84,8 @@ class ExecuteCompareThread(QtCore.QThread):
             pre_combine_data = self.pretreatment(combine_cols, merged_data)
             pre_combine_data['匹配情况'].replace(
                 {'left_only': '只在招采', 'right_only': '只在HIS', 'both': '两者共有'}, inplace=True)
-            if self.is_timestamp:
-                output_path = os.path.join(Files.get_folder(self.plat_file),
-                                           f"{self.filename}_差额对比表_{Files.format_time()}.xlsx")
-            else:
-                output_path = os.path.join(Files.get_folder(self.plat_file),
-                                           f"{self.filename}_差额对比表.xlsx")
+            output_path = os.path.join(Files.get_folder(self.plat_file),
+                                       f"{self.filename}_差额对比表_{Files.format_time()}.xlsx")
             pre_combine_data.to_excel(output_path, index=False)
 
             self.success.emit(output_path)
