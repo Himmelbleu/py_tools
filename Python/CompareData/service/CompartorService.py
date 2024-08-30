@@ -28,13 +28,14 @@ class ExecuteCompareThread(QtCore.QThread):
     error = QtCore.pyqtSignal(Exception, name='error')
     success = QtCore.pyqtSignal(str, name='success')
 
-    def set_values(self, df_data, plat_key, his_key, plat_file, his_file, filename):
+    def set_values(self, df_data, plat_key, his_key, plat_file, his_file, del_fields_file, filename):
         self.df_data = df_data
         self.plat_key = plat_key
         self.his_key = his_key
         self.plat_file = plat_file
         self.his_file = his_file
         self.filename = filename
+        self.del_fields_file = del_fields_file
 
     def exec_context(self, df: pd.DataFrame, col: str, formula: str):
         exec(f"df['{col}'] = {formula}")
@@ -64,6 +65,10 @@ class ExecuteCompareThread(QtCore.QThread):
             if his_data.empty:
                 raise ValueError('HIS 的数据不能空！')
 
+            del_fields_data = None
+            if self.del_fields_file is not None and not self.del_fields_file.strip() == "":
+                del_fields_data = pd.read_excel(self.del_fields_file)
+
             plat_cols = Maths.validate(
                 self.df_data.loc[self.df_data[Constant.TABLE_TYPE] == Constant.PLAT])
             his_cols = Maths.validate(
@@ -81,12 +86,18 @@ class ExecuteCompareThread(QtCore.QThread):
                                    left_on=self.plat_key, right_on=self.his_key)
 
             combine_cols = Maths.validate(self.df_data.loc[self.df_data[Constant.TABLE_TYPE] == ''])
-            pre_combine_data = self.pretreatment(combine_cols, merged_data)
-            pre_combine_data['匹配情况'].replace(
+            combine_data = self.pretreatment(combine_cols, merged_data)
+            combine_data['匹配情况'].replace(
                 {'left_only': '只在招采', 'right_only': '只在HIS', 'both': '两者共有'}, inplace=True)
             output_path = os.path.join(Files.get_folder(self.plat_file),
                                        f"{self.filename}_差额对比表_{Files.format_time()}.xlsx")
-            pre_combine_data.to_excel(output_path, index=False)
+
+            if del_fields_data is not None and not del_fields_data.empty:
+                for del_field_index, del_field_val in del_fields_data.iterrows():
+                    combine_data = combine_data[
+                        ~combine_data[f'{del_field_val['字段名称']}'].isin(del_field_val['字段值'].split(','))]
+
+            combine_data.to_excel(output_path, index=False)
 
             self.success.emit(output_path)
         except Exception as error_msg:

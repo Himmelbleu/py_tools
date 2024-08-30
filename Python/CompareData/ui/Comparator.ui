@@ -6,19 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>605</width>
-    <height>690</height>
+    <width>944</width>
+    <height>670</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>吐鲁番市药品耗材差额对比程序 - V2.4.3</string>
+   <string>吐鲁番市药品医用耗材网采率小程序 - V2.4.4</string>
   </property>
   <property name="windowIcon">
    <iconset>
     <normaloff>../icon/ybj.png</normaloff>../icon/ybj.png</iconset>
   </property>
   <widget class="QWidget" name="verticalLayout_1">
-   <layout class="QVBoxLayout" name="v_2" stretch="0,0,0,0">
+   <layout class="QVBoxLayout" name="v_2" stretch="0,0,0,0,0">
     <property name="spacing">
      <number>30</number>
     </property>
@@ -40,10 +40,17 @@
          </font>
         </property>
         <property name="text">
-         <string>上传</string>
+         <string>文件上传区域</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_tip_1">
+        <property name="text">
+         <string>上传三个必要文件，入库汇总、HIS 入库、药品或耗材模板文件。若有不懂请联系市医保局工程师协助。</string>
         </property>
        </widget>
       </item>
@@ -122,7 +129,14 @@
          </font>
         </property>
         <property name="text">
-         <string>字段</string>
+         <string>模板文件内容预览</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_tip_2">
+        <property name="text">
+         <string>模板文件上传成功之后下面会显示模板文件的内容，若有修改请直接修改模板文件本身，不在该区域下修改。模板文件有复杂的公式需要填写，建议联系市医保局工程师协助。</string>
         </property>
        </widget>
       </item>
@@ -181,6 +195,47 @@
      </layout>
     </item>
     <item>
+     <layout class="QVBoxLayout" name="verticalLayout_6">
+      <item>
+       <widget class="QLabel" name="label_5">
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>字段删除模板文件</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_tip_3">
+        <property name="text">
+         <string>如果每次产生的对比表中都有你不想要的药品或耗材，请上传该文件排除不要的数据。若你没有这个需求，忽略该过程，请进行下一步。</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="del_fields_template_btn">
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>上传字段删除模板文件</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../icon/excel2.png</normaloff>../icon/excel2.png</iconset>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <property name="spacing">
        <number>15</number>
@@ -198,10 +253,17 @@
          </font>
         </property>
         <property name="text">
-         <string>连接</string>
+         <string>对比表连接关键字</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_tip_4">
+        <property name="text">
+         <string>该操作的意思是招采入库汇总和HIS入库汇总通过什么字段进行相连，通常选择医保编码。</string>
         </property>
        </widget>
       </item>
@@ -272,7 +334,14 @@
          </font>
         </property>
         <property name="text">
-         <string>输出</string>
+         <string>文件输出配置</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_tip_5">
+        <property name="text">
+         <string>文件输出位置在你招采入库汇总文件所在位置，或可以直接通过对话框打开文件预览。</string>
         </property>
        </widget>
       </item>
@@ -298,7 +367,7 @@
          </font>
         </property>
         <property name="text">
-         <string>执行任务</string>
+         <string>开始制作文件</string>
         </property>
         <property name="icon">
          <iconset>
@@ -315,13 +384,13 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>605</width>
+     <width>944</width>
      <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_1">
     <property name="title">
-     <string>工具</string>
+     <string>小工具集</string>
     </property>
     <addaction name="action_file_formatter"/>
     <addaction name="actionaction_file_content"/>

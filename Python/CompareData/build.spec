@@ -6,7 +6,7 @@ a = Analysis(
     pathex=[],
     binaries=[],
     datas=[
-      ('D:\\Development\\smalltools\\Python\\CompareData\\icon\\*.png', 'images'),
+      ('D:\\Dev Pros\\toolbox\\Python\\CompareData\\icon\\*.png', 'images'),
     ],
     hiddenimports=[],
     hookspath=[],
@@ -24,7 +24,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='吐鲁番市药品耗材差额对比程序-V2.4.3',
+    name='吐鲁番市药品医用耗材网采率小程序-V2.4.4',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -37,5 +37,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=['D:\\Development\\smalltools\\Python\\CompareData\\icon\\ybj.ico'],
+    icon=['D:\\Dev Pros\\toolbox\\Python\\CompareData\\icon\\ybj.ico'],
 )
